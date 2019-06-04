@@ -1,0 +1,12 @@
+apiVersion: policy/v1beta1
+kind: PodDisruptionBudget
+metadata:
+  name: kubernetes-hello-world
+  namespace: default
+  labels:
+    app: kubernetes-hello-world
+spec:
+  selector:
+    matchLabels:
+      app: kubernetes-hello-world
+  minAvailable: 1

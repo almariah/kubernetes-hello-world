@@ -1,0 +1,16 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kubernetes-hello-world
+spec:
+  template:
+    spec:
+      containers:
+      - name: kubernetes-hello-world
+        args:
+          - -color=LawnGreen
+          - -init-duration=30
+          - -memory-expression=50*Mod[n, 20]
+          - -max-memory=1500
+          - -cpu-expression=x=Mod[n, 40]; Which[x <= 20, 60, 20 < x, 0]
+          - -cores=0.6

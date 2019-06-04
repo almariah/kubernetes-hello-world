@@ -1,0 +1,9 @@
+bases:
+  - ../../base
+
+patches:
+  - deployment.yaml
+
+resources:
+  - pdb.yaml
+  - hpa.yaml

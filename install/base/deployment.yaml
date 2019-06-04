@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kubernetes-hello-world
+  namespace: default
+  labels:
+    app: kubernetes-hello-world
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kubernetes-hello-world
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 25%
+      maxSurge: 25%
+  template:
+    metadata:
+      labels:
+        app: kubernetes-hello-world
+    spec:
+      containers:
+      - image: abdullahalmariah/kubernetes-hello-world:latest
+        imagePullPolicy: Always
+        name: kubernetes-hello-world
+        args:
+          - -color=white
+          - -init-duration=30
+          - -memory-expression=50*Mod[n, 20]
+          - -max-memory=1500
+          - -cpu-expression=x=Mod[n, 40]; Which[x <= 20, 60, 20 < x, 0]
+          - -cores=0.6
+        ports:
+        - containerPort: 8080
+        # Needed to use mlock for memory allocation
+        securityContext:
+          privileged: true
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8080
+          initialDelaySeconds: 35
+          periodSeconds: 5
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 8080
+          initialDelaySeconds: 35
+          periodSeconds: 5
